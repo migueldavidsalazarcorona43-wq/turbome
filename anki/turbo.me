@@ -31,7 +31,9 @@ cmd mkdir c:\Workspace
 workdir c:\Workspace
 
 # Download
-cmd powershell "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri (((wget https://api.github.com/repos/ankitects/anki/releases/latest).Content | ConvertFrom-Json).assets | Where-Object name -like '*qt6.exe').browser_download_url -OutFile Setup.exe; $ProgressPreference = 'Continue'"
+#cmd powershell "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri (((wget https://api.github.com/repos/ankitects/anki/releases/latest).Content | ConvertFrom-Json).assets | Where-Object name -like '*qt6.exe').browser_download_url -OutFile Setup.exe; $ProgressPreference = 'Continue'"
+cmd powershell "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -UseBasicParsing -Uri (((Invoke-WebRequest -UseBasicParsing https://api.github.com/repos/ankitects/anki/releases/latest).Content | ConvertFrom-Json).assets | Where-Object name -like '*qt6.exe').browser_download_url -OutFile Setup.exe; $ProgressPreference = 'Continue'"
+
 
 # Install
 cmd ("Setup.exe", "/S", "/D=c:\Anki")
@@ -64,7 +66,8 @@ cmd rmdir c:\Workspace /S /Q
 ###################################
 
 # cmd powershell "$version = ((Get-Item 'c:\Anki\anki.exe').VersionInfo.FileVersionRaw);''+$version.Major+'.'+$version.Minor+'.'+$version.Build" doesn't work
-cmd powershell "((Invoke-WebRequest https://api.github.com/repos/ankitects/anki/releases/latest).Content | ConvertFrom-Json).tag_name"
+#cmd powershell "((Invoke-WebRequest https://api.github.com/repos/ankitects/anki/releases/latest).Content | ConvertFrom-Json).tag_name"
+cmd powershell "((Invoke-WebRequest -UseBasicParsing https://api.github.com/repos/ankitects/anki/releases/latest).Content | ConvertFrom-Json).tag_name"
 meta tag = last
 
 
